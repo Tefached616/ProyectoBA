@@ -1,25 +1,28 @@
-var mysql = require('mysql');
-var settings = require('./config.json');
-var connection;
+const mysql = require('mysql');
+let connection;
 
-function connectDatabase()
+async function connectDatabase()
 {
-    if(!connection)
-    {
-        connection = mysql.createConnection(settings);
-
-        connection.connect(function(err)
-        {
-            if(!err)
-            {
-                console.log('base de datos conectada' +settings.database);
-            }
-            else
-            {
-                console.log('Error en la conexion con la base de datos');
-            }
-        });
-    }
-    return connection;
+    connection = mysql.createConnection({
+        host:"mondo.mysql.database.azure.com", 
+        user:"Mondo", 
+        password:"Mindo2023*", 
+        database:"mondoc", 
+        port:3306,
+        // ssl: { ca: fs.readFileSync("{ca-cert filename}") },
+      })
+    connection.connect();
 }
-module.exports = connectDatabase();
+const makeQuery = (query, data) => {
+    return new Promise((resolve, reject) => {
+      connection.query(query, data, (error, results) => {
+        if (error) return reject(error);
+  
+        resolve(results);
+      });
+    });
+  };
+
+module.exports = {connectDatabase,connection,makeQuery};
+
+//
