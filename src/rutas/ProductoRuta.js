@@ -1,3 +1,4 @@
+console.log("Hellow ;v")
 //#region METODON LISTAR
 const express = require('express');
 const router = express.Router();
