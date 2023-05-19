@@ -1,88 +1,61 @@
 //#region METODO LISTAR
-const connection = require('../conexion');
+const {response} = require('express');
+const {connection, makeQuery} = require('../conexion/index.js');
 
 var ContactoModelo = {};
 
-ContactoModelo.getContactos = function(callback)
+const getContactos = (req, res = response)=>
 {
-    if(connection)
-    {
-    var sql = "SELECT C.`ID_CONTACTO`, CONCAT(P.`PNOM_PERSONAL`,' ', P.`SNOM_PERSONAL`,' ', P.`PAPELL_PERSONAL`,' ', P.`SAPELL_PERSONAL`) AS 'NOMBRE PERSONAL', C.`DIRDATO_CONTACTO`, CA. `CATALOGO` AS 'TIPO_CONTACTO' FROM `contacto` AS C INNER JOIN `personal` AS P ON C.`ID_PERSONAL` = P. `ID_PERSONAL` INNER JOIN `catalogo` AS CA ON C. `TIPO_CONTACTO`= CA. `ID_CATALOGO` ORDER BY `ID_CONTACTO`";
+  
+    var sql = "SELECT * FROM CONTACTO";
 
-    connection.query(sql, function(error, rows)
-    {
-        if(error)
-        {
-            throw error;
-        }
-            else
-        {
-            callback(null, rows);
-        }
-    });
-}
+    makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(error));
 }
 
-module.exports = ContactoModelo;
 //#endregion
 //#region METODO INSERTAR
-ContactoModelo.insertContacto = function (contactoData, callback) {
-    if (connection) {
-        var sql = " INSERT INTO contacto SET ?";
+const insertContacto = (req, res = response) => {
+    
+        var ContactoData = {
+            CONTACTO: req.body.CONTACTO,
+            TIPO_CONTACTO: req.body.TIPO_CONTACTO
+            };
 
-        connection.query(sql, contactoData, function (error, result) {
-            console.log(" 44 contacto "+contactoData.ID_PERSONAL+" ini "
-            +"ini"+contactoData.DIRDATO_CONTACTO+"ini"+contactoData.TIPO_CONTACTO
-); 
-            
-            if (error) {
-                throw error;
+            var sql =" INSERT INTO contacto SET ?";
 
-            } else {
-                callback(null, { "msg": "Registro insertado" });
-            }
-        });
-    }
-};
+            makeQuery(sql, ContactoData).then(() => res.json("registro insertado con exito")).catch((err) => res.status(500).json(err));
+    
+    };
 //#endregion
 //#region METODO MODIFICAR
-ContactoModelo.updateContacto = function(ContactoData, callback){
-    if(connection){
+const updateContacto = (req, res = response) =>{
+    var ContactoData = {
+        ID_CONTACTO: req.body.ID_CONTACTO,
+        CATALOGO: req.body.CATALOGO,
+        TIPO_CONTACTO: req.body.ID_CONTACTO
+    };
         var sql = "UPDATE contacto SET ID_PERSONAL = "+
-        connection.escape(ContactoData.ID_PERSONAL)
+        ContactoData.ID_CONTACTO+
         +", DIRDATO_CONTACTO = "+
-        connection.escape(ContactoData.DIRDATO_CONTACTO)
+        ContactoData.TIPO_CONTACTO +
         +", TIPO_CONTACTO = "+
-        connection.escape(ContactoData.TIPO_CONTACTO)
+        ContactoData.ID_CONTACTO +
         +" WHERE ID_CONTACTO = "+
-        connection.escape(ContactoData.ID_CONTACTO)+";";
+        ContactoData.ID_CONTACTO+";";
         
-        connection.query(sql, function(error, result){
-            if(error){
-                throw error;
-            }else{
-                callback(null, {"msg:": "Registro Actualizado"});
-            }
-        });
+        makeQuery(sql).then(() => res.json("registro actualizado con exito")).catch((err) => res.status(500).json(err));
     }
-}
+
 //#endregion
 //#region METODO CONSULTA ID
-ContactoModelo.getContactosid = function(id, callback)
+const getContactosid = (req, res = response) =>
 {
-    if(connection)
-    {
     
         var sql = "SELECT C.`ID_CONTACTO`, CONCAT(P.`PNOM_PERSONAL`,' ', P.`SNOM_PERSONAL`,' ', P.`PAPELL_PERSONAL`,' ', P.`SAPELL_PERSONAL`) AS 'NOMBRE PERSONAL', C.`DIRDATO_CONTACTO`, CA. `CATALOGO` AS 'TIPO_CONTACTO' FROM `contacto` AS C INNER JOIN `personal` AS P ON C.`ID_PERSONAL` = P. `ID_PERSONAL` INNER JOIN `catalogo` AS CA ON C. `TIPO_CONTACTO`= CA. `ID_CATALOGO` WHERE `ID_CONTACTO` = " + connection.escape(id)+"ORDER BY `ID_CONTACTO`"+
          ";";
 
-        connection.query(sql, function(error, rows){
-            if(error){
-                throw error;
-            }else{
-                callback(null, rows);
-            }
-        });
-    }
+    
+    makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(err));
 };
 //#endregion
+module.exports= { getContactos,insertContacto, getContactosid, updateContacto }

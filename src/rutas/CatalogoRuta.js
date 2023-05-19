@@ -8,14 +8,17 @@ router.get("/",getCatalogos)
 //#endregion
 //#region METODO INSERTAR
 router.post("/",insertCatalogo)
-//#endregion
+
 //#region METODO MODIFICAR
 //#endregion
-//#region METODO CONSULTAR ID
-router.get("/:tipcat", getCatalogosTC);
-//#endregion
-
 router.put("/", updateCatalogo);
 
+//#region METODO CONSULTAR ID
+//router.get("/:tipcat", getCatalogosTC);
+router.get("/:tipcat", getCatalogosTC);
+//#endregion
+//#endregion
 router.get("/:tipcat/:id", getCatalogosID);
+
+//#endregion
 module.exports=router;

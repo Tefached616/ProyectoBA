@@ -1,6 +1,6 @@
 //#region METODO LISTAR
 const { response } = require('express');
-const { connection, makeQuery } = require('../conexion/index.js');
+const {connection, makeQuery} = require('../conexion/index.js');
 
 
 var CatalogoModelo = {};
@@ -9,7 +9,7 @@ const getCatalogos = (req, res = response) => {
 
     var sql = "SELECT * FROM CATALOGO";
 
-    makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(error));
+    makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(err));
 
 }
 
@@ -60,7 +60,8 @@ const getCatalogosTC = (req, res = response) => {
         tipcat +
         " ORDER BY C. ID_CATALOGO ;";
 
-    makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(err));
+        connection.query(sql, function(error, rows){
+});
 };
 //#endregion
 //#region METODO CONSULTAR ID DENTRO FORANEA
@@ -80,6 +81,6 @@ const getCatalogosID = (req, res = response) => {
     makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(err));
 };
 
-;
+
 module.exports = { getCatalogos, insertCatalogo, getCatalogosTC, getCatalogosID, updateCatalogo }
 //#endregion
