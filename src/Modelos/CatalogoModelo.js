@@ -1,9 +1,6 @@
 //#region METODO LISTAR
 const { response } = require('express');
-const { connection, makeQuery } = require('../conexion/index.js');
-
-
-var CatalogoModelo = {};
+const { makeQuery } = require('../conexion/index.js');
 
 const getCatalogos = (req, res = response) => {
 
@@ -54,7 +51,7 @@ const getCatalogosTC = (req, res = response) => {
 
     var sql = "SELECT C.`ID_CATALOGO`," +
         " C.`CATALOGO`,  N.`CATALOGO` AS 'TIPO_CATALOGO' " +
-        "   FROM `catalogo` AS C 	INNER JOIN `catalogo` AS N ON C. " +
+        "   FROM `catalogo` AS C    INNER JOIN `catalogo` AS N ON C. " +
         "`TIPO_CATALOGO` = N. `ID_CATALOGO` " +
         "WHERE C.`TIPO_CATALOGO` = " +
         tipcat +
@@ -71,11 +68,10 @@ const getCatalogosID = (req, res = response) => {
 
     var sql = "SELECT C.`ID_CATALOGO`," +
         " C.`CATALOGO`,  N.`CATALOGO` AS 'TIPO_CATALOGO' " +
-        " FROM `catalogo` AS C 	INNER JOIN `catalogo` AS N ON C. " +
+        " FROM `catalogo` AS C  INNER JOIN `catalogo` AS N ON C. " +
         " `TIPO_CATALOGO` = N. `ID_CATALOGO` " +
         " WHERE C.`TIPO_CATALOGO` = " + tipcat +
         " AND C.`ID_CATALOGO` = " + id + ";";
-
 
     makeQuery(sql).then((result) => res.json(result)).catch((err) => res.status(500).json(err));
 };

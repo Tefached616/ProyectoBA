@@ -3,18 +3,15 @@ const {Router} = require('express');
 const router = Router();
 
 const {getCatalogos,getCatalogosID,getCatalogosTC,insertCatalogo,updateCatalogo} = require('../Modelos/CatalogoModelo');
-
-//Consultar los catalogos a nivel general
 router.get("/",getCatalogos)
 
-//insertar catalogos en la tabla
+//region METODO INSERTAR
 router.post("/",insertCatalogo)
-
+//METODO MODIFICAR
+router.put("/", updateCatalogo);
+//METODO CONSULTAR ID
+router.get("/:tipcat/:id", getCatalogosID);
+//
 router.get("/:tipcat", getCatalogosTC);
 
-//Actualizar catalogos en la tabla
-router.put("/", updateCatalogo);
-
-//Consultar Catalogos por ID
-router.get("/:tipcat/:id", getCatalogosID);
 module.exports=router;
