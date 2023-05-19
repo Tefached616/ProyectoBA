@@ -27,7 +27,7 @@ class Server {
   routeProductoXMateriaPrima = "/api/producto-materia-prima";
 
   constructor() {
-    this.port = 3000;
+    this.port = process.env.PORT || 3000;
 
     // db
     this.connectDB();
