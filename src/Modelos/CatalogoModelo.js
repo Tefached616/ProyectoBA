@@ -1,9 +1,7 @@
 //#region METODO LISTAR
 const { response } = require('express');
-const { connection, makeQuery } = require('../conexion/index.js');
+const { makeQuery } = require('../conexion/index.js');
 
-
-var CatalogoModelo = {};
 
 const getCatalogos = (req, res = response) => {
 

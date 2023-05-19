@@ -17,4 +17,7 @@ router.put("/", updateCatalogo);
 
 //Consultar Catalogos por ID
 router.get("/:tipcat/:id", getCatalogosID);
+//
+router.get("/:tipcat", getCatalogosTC);
+
 module.exports=router;
